@@ -106,5 +106,4 @@ def main(argv):
     sys.exit(exit_code)
 
 if __name__ == "__main__":
-    argv = sys.argv[1:]
-    main(argv)
+    main(sys.argv[1:])
