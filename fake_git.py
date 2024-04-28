@@ -40,12 +40,18 @@ hook_commands = (
 )
 
 def find_hook_command(argv):
+    '''
+    Find git subcommand to hook.
+    '''
     for arg in argv:
         if arg in hook_commands:
             return arg
     return None
 
 def find_url(argv):
+    '''
+    Find url parameter from arugments.
+    '''
     url = None
     path = None
     for arg in argv:
@@ -56,6 +62,9 @@ def find_url(argv):
     return url, path
 
 def run_git_command_with_pipe(argv):
+    '''
+    Run git command with pipe.
+    '''
     command = argv.copy()
     command.insert(0, GIT_PATH)
     process = subprocess.Popen(command)
@@ -63,17 +72,29 @@ def run_git_command_with_pipe(argv):
     return exit_code
 
 def run_command_with_pipe_and_return_output(command):
+    '''
+    Run command with pipe and return output.
+    '''
     process = subprocess.Popen(command, stdout=subprocess.PIPE, text=True)
     stdout, _ = process.communicate()
     return stdout.splitlines()[0]
 
 def get_git_remote_name():
+    '''
+    Get git remote name.
+    '''
     return run_command_with_pipe_and_return_output([GIT_PATH, 'remote'])
 
 def get_git_remote_url(remote_name):
+    '''
+    Get git remote url.
+    '''
     return run_command_with_pipe_and_return_output([GIT_PATH, 'remote', 'get-url', remote_name])
 
 def mirror_or_fetch_to_local(url, path):
+    '''
+    Mirror or fetch to local repository.
+    '''
     mirror_path = MIRROR_ROOT + "/" + path
 
     if not os.path.exists(mirror_path):
@@ -85,6 +106,9 @@ def mirror_or_fetch_to_local(url, path):
         sys.exit(exit_code)
 
 def main(argv):
+    '''
+    Main function.
+    '''
     exit_code = 1
     command = find_hook_command(argv)
     if command == "clone":
