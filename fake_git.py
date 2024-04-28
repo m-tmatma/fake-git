@@ -4,9 +4,12 @@ git hook script to mirror git repository to local disk and use it instead of rem
 
 Basic mechanism:
 1. git can accept '-c' option to set configuration as ephemeral option.
-2. git can accept 'url.<base>.insteadOf' configuration to replace base url with another url.
-3. clone from actual remote repository at the first time if local mirror does not exist and clone from local mirror.
-4. fetch from actual remote repository if local mirror exists and fetch from local mirror.
+2. git can accept 'url.<base>.insteadOf' configuration to replace base url
+   with another url.
+3. clone from actual remote repository at the first time if local mirror does
+   not exist and clone from local mirror.
+4. fetch from actual remote repository if local mirror exists and fetch
+   from local mirror.
 '''
 
 import sys
