@@ -136,8 +136,6 @@ def main(argv):
     else:
         params = argv
 
-    if DEBUG_ON:
-        print("DEBUG: org", argv, file=sys.stderr)
     exit_code = run_git_command_with_pipe(params)
     sys.exit(exit_code)
 
