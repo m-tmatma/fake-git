@@ -20,17 +20,17 @@ import subprocess
 DEBUG_ON = False
 GIT_PATH = "/usr/bin/git"
 HOME_DIR = os.path.expanduser("~")
-mirror_root = os.path.join(HOME_DIR, ".git-mirror")
+MIRROR_ROOT = os.path.join(HOME_DIR, ".git-mirror")
 
 options = [
-    # https:// request will be redirected to mirror_root local path
-    "-c", f"url.{mirror_root}/.insteadOf=https://",
+    # https:// request will be redirected to MIRROR_ROOT local path
+    "-c", f"url.{MIRROR_ROOT}/.insteadOf=https://",
 
-    # http:// request will be redirected to mirror_root local path
-    "-c", f"url.{mirror_root}/.insteadOf=http://",
+    # http:// request will be redirected to MIRROR_ROOT local path
+    "-c", f"url.{MIRROR_ROOT}/.insteadOf=http://",
 
-    # git:// request will be redirected to mirror_root local path
-    "-c", f"url.{mirror_root}/.insteadOf=git://",
+    # git:// request will be redirected to MIRROR_ROOT local path
+    "-c", f"url.{MIRROR_ROOT}/.insteadOf=git://",
 ]
 
 hook_commands = (
@@ -76,7 +76,7 @@ def get_git_remote_url(remote_name):
     return run_command_with_pipe_and_return_output([GIT_PATH, 'remote', 'get-url', remote_name])
 
 def mirror_or_fetch_to_local(url, schema, path):
-    mirror_path = mirror_root + "/" + path
+    mirror_path = MIRROR_ROOT + "/" + path
 
     if not os.path.exists(mirror_path):
         params = ["clone", "--mirror", url, mirror_path]
