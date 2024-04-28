@@ -18,7 +18,7 @@ import re
 import subprocess
 
 DEBUG_ON = False
-git_path = "/usr/bin/git"
+GIT_PATH = "/usr/bin/git"
 home_dir = os.path.expanduser("~")
 mirror_root = os.path.join(home_dir, ".git-mirror")
 
@@ -59,7 +59,7 @@ def find_url(argv):
 
 def run_git_command_with_pipe(argv):
     command = argv.copy()
-    command.insert(0, git_path)
+    command.insert(0, GIT_PATH)
     process = subprocess.Popen(command)
     exit_code = process.wait()
     return exit_code
@@ -70,10 +70,10 @@ def run_command_with_pipe_and_return_output(command):
     return stdout.splitlines()[0]
 
 def get_git_remote_name():
-    return run_command_with_pipe_and_return_output([git_path, 'remote'])
+    return run_command_with_pipe_and_return_output([GIT_PATH, 'remote'])
 
 def get_git_remote_url(remote_name):
-    return run_command_with_pipe_and_return_output([git_path, 'remote', 'get-url', remote_name])
+    return run_command_with_pipe_and_return_output([GIT_PATH, 'remote', 'get-url', remote_name])
 
 def mirror_or_fetch_to_local(url, schema, path):
     mirror_path = mirror_root + "/" + path
