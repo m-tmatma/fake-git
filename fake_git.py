@@ -37,6 +37,7 @@ hook_commands = (
     "clone",
     "fetch",
     "pull",
+    "push",
 )
 
 def find_hook_command(argv):
@@ -121,6 +122,9 @@ def main(argv):
         url = get_git_remote_url(remote_name)
         url, path = find_url([url])
         mirror_or_fetch_to_local(url, path)
+    elif command == "push":
+        exit_code = run_git_command_with_pipe(argv)
+        sys.exit(exit_code)
 
     params = options.copy()
     params.extend(argv)
