@@ -116,7 +116,7 @@ def main(argv):
     if command == "clone":
         url, path = find_url(argv)
         mirror_or_fetch_to_local(url, path)
-    elif command == "fetch":
+    elif command == "fetch" or command == "pull":
         remote_name = get_git_remote_name()
         url = get_git_remote_url(remote_name)
         url, path = find_url([url])
