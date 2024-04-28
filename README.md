@@ -11,10 +11,11 @@ Once you clone a repository, `fake_git` tries to update the local cache first by
 
 ## Installation
 
-1. Copy `fake_git.py` to somewhere in your computer
-2. create symbolic link as `git` or rename `fake_git.py` to `git`.
-3. Include the location of the `git` script to envioromental variable (`PATH`)
-4. Use `git` command normally.
+1. Clone this repository.
+2. Run `export PATH=<path_to_this_repository>:$PATH` on your shell.
+3. Run git as usual.
+
+Replace `<path_to_this_repository>` with your local directory of the repository.
 
 ## Internal behavior
 
