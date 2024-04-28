@@ -17,7 +17,7 @@ import os
 import re
 import subprocess
 
-debugOn = False
+DEBUG_ON = False
 git_path = "/usr/bin/git"
 home_dir = os.path.expanduser("~")
 mirror_root = os.path.join(home_dir, ".git-mirror")
@@ -101,7 +101,7 @@ def main(argv):
     params = options.copy()
     params.extend(argv)
 
-    if debugOn: print("DEBUG: org", argv)
+    if DEBUG_ON: print("DEBUG: org", argv)
     exit_code = run_git_command_with_pipe(params)
     sys.exit(exit_code)
 
