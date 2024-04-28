@@ -102,7 +102,7 @@ def mirror_or_fetch_to_local(url, path):
     if not os.path.exists(mirror_path):
         params = ["clone", "--mirror", url, mirror_path]
     else:
-        params = ["-C", mirror_path, "remote", "update"]
+        params = ["-C", mirror_path, "remote", "update", "-p"]
     exit_code = run_git_command_with_pipe(params)
     if exit_code != 0:
         sys.exit(exit_code)
