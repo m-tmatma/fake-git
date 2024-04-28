@@ -17,7 +17,9 @@ import os
 import re
 import subprocess
 
-DEBUG_ON = False
+DEBUG_ON = os.environ.get('DEBUG_ON', None)
+if DEBUG_ON is not None:
+    DEBUG_ON = True
 GIT_PATH = "/usr/bin/git"
 HOME_DIR = os.path.expanduser("~")
 MIRROR_ROOT = os.path.join(HOME_DIR, ".git-mirror")
