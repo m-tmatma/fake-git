@@ -67,17 +67,19 @@ def run_git_command_with_pipe(argv):
     '''
     command = argv.copy()
     command.insert(0, GIT_PATH)
-    process = subprocess.Popen(command)
-    exit_code = process.wait()
-    return exit_code
+    with subprocess.Popen(command) as process:
+        exit_code = process.wait()
+        return exit_code
+    return 1
 
 def run_command_with_pipe_and_return_output(command):
     '''
     Run command with pipe and return output.
     '''
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, text=True)
-    stdout, _ = process.communicate()
-    return stdout.splitlines()[0]
+    with subprocess.Popen(command, stdout=subprocess.PIPE, text=True) as process:
+        stdout, _ = process.communicate()
+        return stdout.splitlines()[0]
+    return None
 
 def get_git_remote_name():
     '''
