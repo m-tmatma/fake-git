@@ -19,8 +19,8 @@ import subprocess
 
 DEBUG_ON = False
 GIT_PATH = "/usr/bin/git"
-home_dir = os.path.expanduser("~")
-mirror_root = os.path.join(home_dir, ".git-mirror")
+HOME_DIR = os.path.expanduser("~")
+mirror_root = os.path.join(HOME_DIR, ".git-mirror")
 
 options = [
     # https:// request will be redirected to mirror_root local path
