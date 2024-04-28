@@ -47,15 +47,13 @@ def find_hook_command(argv):
 
 def find_url(argv):
     url = None
-    schema = None
     path = None
     for arg in argv:
         match = re.match(r'^((https?|git)://)(.+)', arg)
         if match:
             url = arg
-            schema = match.group(1)
             path   = match.group(3)
-    return url, schema, path
+    return url, path
 
 def run_git_command_with_pipe(argv):
     command = argv.copy()
@@ -75,7 +73,7 @@ def get_git_remote_name():
 def get_git_remote_url(remote_name):
     return run_command_with_pipe_and_return_output([GIT_PATH, 'remote', 'get-url', remote_name])
 
-def mirror_or_fetch_to_local(url, schema, path):
+def mirror_or_fetch_to_local(url, path):
     mirror_path = MIRROR_ROOT + "/" + path
 
     if not os.path.exists(mirror_path):
@@ -90,13 +88,13 @@ def main(argv):
     exit_code = 1
     command = find_hook_command(argv)
     if command == "clone":
-        url, schema, path = find_url(argv)
-        mirror_or_fetch_to_local(url, schema, path)
+        url, path = find_url(argv)
+        mirror_or_fetch_to_local(url, path)
     elif command == "fetch":
         remote_name = get_git_remote_name()
         url = get_git_remote_url(remote_name)
-        url, schema, path = find_url([url])
-        mirror_or_fetch_to_local(url, schema, path)
+        url, path = find_url([url])
+        mirror_or_fetch_to_local(url, path)
 
     params = options.copy()
     params.extend(argv)
