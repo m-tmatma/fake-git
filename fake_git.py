@@ -125,7 +125,8 @@ def main(argv):
     params = options.copy()
     params.extend(argv)
 
-    if DEBUG_ON: print("DEBUG: org", argv)
+    if DEBUG_ON:
+        print("DEBUG: org", argv)
     exit_code = run_git_command_with_pipe(params)
     sys.exit(exit_code)
 
