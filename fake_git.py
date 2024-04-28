@@ -113,7 +113,12 @@ def mirror_or_fetch_to_local(url, path):
         params = ["-C", mirror_path, "remote", "update", "-p"]
     exit_code = run_git_command_with_pipe(params)
     if exit_code != 0:
+        if DEBUG_ON:
+            print("FAILED: run", "git", params, file=sys.stderr)
         sys.exit(exit_code)
+    else:
+        if DEBUG_ON:
+            print("SUCCESS: run", "git", params, file=sys.stderr)
 
 def main(argv):
     '''
