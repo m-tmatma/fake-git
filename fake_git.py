@@ -76,7 +76,6 @@ def run_git_command_with_pipe(argv):
     with subprocess.Popen(command) as process:
         exit_code = process.wait()
         return exit_code
-    return 1
 
 def run_command_with_pipe_and_return_output(command):
     '''
