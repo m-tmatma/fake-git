@@ -76,7 +76,6 @@ def run_git_command_with_pipe(argv):
     with subprocess.Popen(command) as process:
         exit_code = process.wait()
         return exit_code
-    return 1
 
 def run_command_with_pipe_and_return_output(command):
     '''
@@ -86,7 +85,7 @@ def run_command_with_pipe_and_return_output(command):
         print("DEBUG: run", command, file=sys.stderr)
     with subprocess.Popen(command, stdout=subprocess.PIPE, text=True) as process:
         stdout, _ = process.communicate()
-        return stdout.splitlines()[0]
+        return stdout.splitlines()
     return None
 
 def get_git_remote_name():
@@ -130,10 +129,11 @@ def main(argv):
         url, path = find_url(argv)
         mirror_or_fetch_to_local(url, path)
     elif command in ('fetch', 'pull'):
-        remote_name = get_git_remote_name()
-        url = get_git_remote_url(remote_name)
-        url, path = find_url([url])
-        mirror_or_fetch_to_local(url, path)
+        remote_names = get_git_remote_name()
+        for remote_name in remote_names:
+            urls = get_git_remote_url(remote_name)
+            url, path = find_url(urls)
+            mirror_or_fetch_to_local(url, path)
 
     if command in ('clone', 'fetch', 'pull'):
         params = options.copy()
