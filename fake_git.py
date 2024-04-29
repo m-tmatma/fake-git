@@ -124,9 +124,11 @@ def main(argv):
     Main function.
     '''
     exit_code = 1
+    url, path = find_url(argv)
+    if url is not None and path is not None:
+        mirror_or_fetch_to_local(url, path)
     command = find_hook_command(argv)
     if command == "clone":
-        url, path = find_url(argv)
         mirror_or_fetch_to_local(url, path)
     elif command in ('fetch', 'pull'):
         remote_names = get_git_remote_name()
