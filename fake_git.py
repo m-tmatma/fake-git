@@ -24,6 +24,22 @@ GIT_PATH = "/usr/bin/git"
 HOME_DIR = os.path.expanduser("~")
 MIRROR_ROOT = os.path.join(HOME_DIR, ".git-mirror")
 
+class StdErrWrapper:
+    def __init__(self, file):
+        self.file = open(file, 'a')
+
+    def write(self, message):
+        self.file.write(message)
+        sys.stderr.write(message)
+
+    def flush(self):
+        self.file.flush()
+
+    def close(self):
+        self.file.close()
+
+wrapper = StdErrWrapper('/tmp/fake_git_log.txt')
+
 options = [
     # https:// request will be redirected to MIRROR_ROOT local path
     "-c", f"url.{MIRROR_ROOT}/.insteadOf=https://",
@@ -72,7 +88,7 @@ def run_git_command_with_pipe(argv):
     command = argv.copy()
     command.insert(0, GIT_PATH)
     if DEBUG_ON:
-        print("DEBUG: run", command, file=sys.stderr)
+        print("DEBUG: RUN-git", command, file=wrapper)
     with subprocess.Popen(command) as process:
         exit_code = process.wait()
         return exit_code
@@ -82,7 +98,7 @@ def run_command_with_pipe_and_return_output(command):
     Run command with pipe and return output.
     '''
     if DEBUG_ON:
-        print("DEBUG: run", command, file=sys.stderr)
+        print("DEBUG: wrapper", command, file=wrapper)
     with subprocess.Popen(command, stdout=subprocess.PIPE, text=True) as process:
         stdout, _ = process.communicate()
         return stdout.splitlines()
@@ -113,11 +129,11 @@ def mirror_or_fetch_to_local(url, path):
     exit_code = run_git_command_with_pipe(params)
     if exit_code != 0:
         if DEBUG_ON:
-            print("FAILED: run", "git", params, file=sys.stderr)
+            print("FAILED: RUN-git", "git", params, file=wrapper)
         sys.exit(exit_code)
     else:
         if DEBUG_ON:
-            print("SUCCESS: run", "git", params, file=sys.stderr)
+            print("SUCCESS: RUN-git", "git", params, file=wrapper)
 
 def main(argv):
     '''
@@ -140,8 +156,12 @@ def main(argv):
     if command in ('clone', 'fetch', 'pull'):
         params = options.copy()
         params.extend(argv)
+        if DEBUG_ON:
+            print("hooked RUN-git", "git", params, file=wrapper)
     else:
         params = argv
+        if DEBUG_ON:
+            print("normal RUN-git", "git", params, file=wrapper)
 
     exit_code = run_git_command_with_pipe(params)
     sys.exit(exit_code)
