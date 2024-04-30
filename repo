@@ -420,6 +420,7 @@ RunResult = collections.namedtuple(
 class RunError(Exception):
   """Error when running a command failed."""
 
+import inspect
 
 def run_command(cmd, **kwargs):
   """Run |cmd| and return its output."""
@@ -441,6 +442,10 @@ def run_command(cmd, **kwargs):
       # TODO(vapier): Once we require Python 3, use 'backslashreplace'.
       return output.decode('utf-8', 'replace')
 
+  call = inspect.stack()[2]
+  print('--------------------------------------------------')
+  print(f'repo: running: [{call.filename}:{call.function}:{call.lineno}]', cmd, file=sys.stderr)
+  print('--------------------------------------------------')
   # Run & package the results.
   proc = subprocess.Popen(cmd, **kwargs)
   (stdout, stderr) = proc.communicate(input=cmd_input)
@@ -778,6 +783,7 @@ def SetupGnuPG(quiet):
 def _SetConfig(cwd, name, value):
   """Set a git configuration option to the specified value.
   """
+  print('repo: Set config %s %s' % (name, value))
   run_git('config', name, value, cwd=cwd)
 
 
