@@ -444,7 +444,7 @@ def run_command(cmd, **kwargs):
 
   call = inspect.stack()[2]
   print('--------------------------------------------------')
-  print(f'repo: running: [{call.filename}:{call.function}:{call.lineno}]', cmd, file=sys.stderr)
+  print(f'repo: run : [{call.filename}:{call.function}:{call.lineno}]', cmd, file=sys.stderr)
   print('--------------------------------------------------')
   # Run & package the results.
   proc = subprocess.Popen(cmd, **kwargs)
@@ -460,6 +460,8 @@ def run_command(cmd, **kwargs):
     dbg += ' 2>&1'
   trace.print(dbg)
   ret = RunResult(proc.returncode, decode(stdout), decode(stderr))
+  print(f'repo: done: [{call.filename}:{call.function}:{call.lineno}] code={ret.returncode}', cmd, file=sys.stderr)
+  print('--------------------------------------------------')
 
   # If things failed, print useful debugging output.
   if check and ret.returncode:
