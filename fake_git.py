@@ -164,6 +164,11 @@ def main(argv):
         if DEBUG_ON:
             print("normal RUN-git", "git", params, file=wrapper)
 
+    cmd = [GIT_PATH, 'config', '--list', '--show-origin']
+    output = run_command_with_pipe_and_return_output(cmd)
+    if DEBUG_ON:
+        for line in output:
+            print("    DEBUG-config: ", line, file=wrapper)
     exit_code = run_git_command_with_pipe(params)
     sys.exit(exit_code)
 
