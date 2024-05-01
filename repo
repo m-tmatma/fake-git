@@ -443,8 +443,12 @@ def run_command(cmd, **kwargs):
       return output.decode('utf-8', 'replace')
 
   call = inspect.stack()[2]
+  # print('--------------------------------------------------')
+  # print(f'repo: run : [{call.filename}:{call.function}:{call.lineno}]', cmd, file=sys.stderr)
+  # print('--------------------------------------------------')
   print('--------------------------------------------------')
-  print(f'repo: run : [{call.filename}:{call.function}:{call.lineno}]', cmd, file=sys.stderr)
+  for call in inspect.stack()[2:]:
+    print(f'repo: run : [{call.filename}:{call.function}:{call.lineno}]', cmd, file=sys.stderr)
   print('--------------------------------------------------')
   # Run & package the results.
   proc = subprocess.Popen(cmd, **kwargs)
@@ -1244,6 +1248,9 @@ def _RunSelf(wrapper_path):
   my_dir = os.path.dirname(wrapper_path)
   my_main = os.path.join(my_dir, 'main.py')
   my_git = os.path.join(my_dir, '.git')
+  print(f"my_dir: {my_dir}")
+  print(f"my_main: {my_main}")
+  print(f"my_git: {my_git}")
 
   if os.path.isfile(my_main) and os.path.isdir(my_git):
     for name in ['git_config.py',
@@ -1342,6 +1349,7 @@ def main(orig_args):
         '--wrapper-path=%s' % wrapper_path,
         '--']
   me.extend(orig_args)
+  print(f"me: {me}")
   exec_command(me)
   print("fatal: unable to start %s" % repo_main, file=sys.stderr)
   sys.exit(148)
