@@ -89,7 +89,7 @@ def run_git_command_with_pipe(argv):
     command = argv.copy()
     command.insert(0, GIT_PATH)
     if DEBUG_ON:
-        print(f"DEBUG: REAL [{workdir}]", command, file=wrapper)
+        print(f"DEBUG: REAL [{workdir}]", " ".join(command), file=wrapper)
     with subprocess.Popen(command) as process:
         exit_code = process.wait()
         return exit_code
@@ -99,7 +99,7 @@ def run_command_with_pipe_and_return_output(command):
     Run command with pipe and return output.
     '''
     if DEBUG_ON:
-        print(f"DEBUG: REAL [{workdir}]", command, file=wrapper)
+        print(f"DEBUG: REAL [{workdir}]", " ".join(command), file=wrapper)
     with subprocess.Popen(command, stdout=subprocess.PIPE, text=True) as process:
         stdout, _ = process.communicate()
         return stdout.splitlines()
